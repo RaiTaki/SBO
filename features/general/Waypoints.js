@@ -371,7 +371,7 @@ register("worldUnload", () => {
 register("chat", (player, spacing, x, y, z, event) => {
     if (!isWorldLoaded()) return;
     const isDiana = checkDiana();
-    const isInq = (isDiana && settings.allWaypointsAreInqs) || (isDiana && settings.inqWaypoints && !z.includes(" "));
+    const isInq = (isDiana && settings.inqWaypoints && (settings.allWaypointsAreInqs || z.toLowerCase().includes("inquisitor") || !z.includes(" ")));
 
     z = z.replace("&r", "").split(" ")[0];
 
