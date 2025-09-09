@@ -156,7 +156,7 @@ new Achievement(27, "Sleep is downtime!", "3 days of playtime in one event", "Le
 
 new Achievement(29, "lf Stick", "200 Minotaur since Stick", "Common"); 
 new Achievement(30, "lf Relic", "1000 Champions since Relic", "Uncommon"); 
-new Achievement(66, "Where is my Relic?", "3000 champions since Relic", "Mythic", 30, 2);
+new Achievement(65, "Where is my Relic?", "3000 champions since Relic", "Mythic", 30, 2);
 
 new Achievement(31, "lf Inquisitor", "250 mobs since Inquisitor", "Common"); 
 new Achievement(32, "You have legi Griffin right?", "500 mobs since Inquisitor", "Rare", 31); 

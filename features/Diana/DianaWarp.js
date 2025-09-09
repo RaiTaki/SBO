@@ -3,6 +3,7 @@ import { Keybind } from "../../../tska/shared/Keybind"
 import { Waypoint, lockWarp } from "../general/Waypoints";
 import settings from "../../settings";
 import { toTitleCase, setTimeout } from "../../utils/functions";
+import { checkDiana } from "../../utils/checkDiana";
 
 let closestWarpGuess = undefined;
 let closestWarpInq = undefined;
@@ -10,6 +11,7 @@ let warpedTo = ""
 let tryWarp = false;
 const warpKey = new Keybind("Burrow Warp", Keyboard.KEY_NONE, "SkyblockOverhaul");
 warpKey.registerKeyPress(() => {
+    if (!checkDiana()) return;
     if (!settings.dianaBurrowWarp) return;
     if (settings.warpDelay && Date.now() - getLastGuessTime() < settings.warpDelayTime) return;
     closestWarpGuess = Waypoint.getClosestWarp(Waypoint.guessWp);
@@ -25,6 +27,7 @@ warpKey.registerKeyPress(() => {
 
 const inquisWarpKey = new Keybind("Iqnuis Warp", Keyboard.KEY_NONE, "SkyblockOverhaul");
 inquisWarpKey.registerKeyPress(() => {
+    if (!checkDiana()) return;
     if (!settings.inqWarpKey) return;
 
     const inqWaypoints = Waypoint.getWaypointsOfType("inq");
