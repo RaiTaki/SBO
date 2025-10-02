@@ -5,7 +5,7 @@ import { mythosMobHpOverlay } from "../guis/DianaGuis";
 import { checkDiana } from "../../utils/checkDiana";
 import RenderLibV2 from "../../../RenderLibV2";
 import { data } from "../../utils/variables";
-import { checkSendInqMsg } from "../../utils/functions";
+import {checkSendInqMsg, hasTrackedInq} from "../../utils/functions";
 export function getMobsToDisplay() {
     return names;
 }
@@ -102,16 +102,41 @@ registerWhen(register("step", () => {
         World.getAllEntitiesOfType(net.minecraft.entity.item.EntityArmorStand).forEach((armorStand) => {
             let uuid = armorStand.getUUID();
             seenUUIDs.add(uuid);
-            
+            checkCocoon(armorStand);
+
             trackEntity(uuid, armorStand, TrackedInqs, (name) => name.includes("Inquisitor"), dianaEntityList);  
             trackEntity(uuid, armorStand, TrackedMobs, (name) => (name.includes("Exalted") || 
             name.includes("Stalwart")) && !name.split(" ")[2].startsWith("0"), dianaEntityList, true);
         });
-        
         updateTrackedEntities(TrackedInqs, seenUUIDs);
         updateTrackedEntities(TrackedMobs, seenUUIDs);
     }
 }).setFps(6), () => settings.mythosMobHp || settings.inqHighlight || settings.inqCircle && getWorld() === "Hub");
+
+const cocoonTexture = "eyJ0aW1lc3RhbXAiOjE1ODMxMjMyODkwNTMsInByb2ZpbGVJZCI6IjkxZjA0ZmU5MGYzNjQzYjU4ZjIwZTMzNzVmODZkMzllIiwicHJvZmlsZU5hbWUiOiJTdG9ybVN0b3JteSIsInNpZ25hdHVyZVJlcXVpcmVkIjp0cnVlLCJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGNlYjBlZDhmYzIyNzJiM2QzZDgyMDY3NmQ1MmEzOGU3YjJlOGRhOGM2ODdhMjMzZTBkYWJhYTE2YzBlOTZkZiJ9fX0="
+let lastCocoonCheck = 0;
+export function checkCocoon(armorstand) {
+
+    if (!settings.cocoonShare && !settings.cocoonTitle) return false;
+    let armor = armorstand?.entity?.func_82169_q(3)
+    if (!armor) return false;
+    let skull = new Item(armor)
+    if (skull.getID() !== 397) return false;
+    let nbtObject = skull.getItemNBT()?.toObject();
+    if (!nbtObject) return false;
+    let texture = nbtObject.tag?.SkullOwner?.Properties?.textures?.[0]?.Value;
+    if (!texture) return false;
+    if (lastCocoonCheck + 10000 < Date.now()) {
+        if (settings.cocoonShare) {
+            ChatLib.command("pc Cocoon")
+        }
+        if (settings.cocoonTitle) {
+            Client.showTitle(`&r&6&l<&b&l&kO&6&l> &b&lINQUISITOR! &6&l<&b&l&kO&6&l>`, "", 0, 40, 20);
+        }
+        lastCocoonCheck = Date.now();
+    }
+    return texture === cocoonTexture
+}
 
 let inqs = [];
 export const inqHighlightRegister = register("renderWorld", () => {
