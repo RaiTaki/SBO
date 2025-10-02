@@ -314,6 +314,20 @@ class Settings {
     })
     inquisDetect = true;
     @SwitchProperty({
+        name: "Share Inq Cocoon",
+        description: "Sends a text on inq cocoon",
+        category: "Diana",
+        subcategory: "Other",
+    })
+    cocoonShare = true;
+    @SwitchProperty({
+        name: 'Show Title On Inq Cocoon',
+        description: 'Shows a title on inq cocoon',
+        category: "Diana",
+        subcategory: "Other",
+    })
+    cocoonTitle = false;
+    @SwitchProperty({
         name: "Copy Inquisitor Coords",
         description: "Copy coords for inquisitors (patcher format) mainly for muted player.",
         category: "Diana",

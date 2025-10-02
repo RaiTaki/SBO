@@ -192,7 +192,7 @@ function trackLsInq(tracker) {
     }
     tracker.save();
 }
-let hasTrackedInq = false;
+export let hasTrackedInq = false;
 registerWhen(register("entityDeath", (entity) => { // geht noch nicht weil er real enitiy names mint wie ZOMBIE, Iron Golem etc
     let dist = entity.distanceTo(Player.getPlayer());
     entityName = entity.getName().toString();
